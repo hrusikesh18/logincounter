@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
@@ -38,7 +38,7 @@ class DatabaseHelper {
     );
   }
 
-  // Register a new user with error handling for unique constraint
+  // Register a new user with error handling
   Future<void> registerUser(String username, String password) async {
     final db = await database;
     final hashedPassword = _hashPassword(password);
@@ -50,11 +50,11 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.abort, // Aborts if username exists
       );
     } catch (e) {
-      // Handle unique constraint error (username already exists)
+      // username already exists
       if (e is DatabaseException && e.isUniqueConstraintError()) {
         throw Exception('Username already exists');
       } else {
-        throw e; // For other types of errors
+        throw e;
       }
     }
   }
